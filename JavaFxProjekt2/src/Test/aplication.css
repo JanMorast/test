@@ -1,0 +1,12 @@
+CREATE  OR REPLACE TRIGGER multiple_trigger
+AFTER INSERT or UPDATE OF gehalt, plz or DELETE  ON personal  
+FOR EACH ROW
+BEGIN  
+   IF INSERTING  THEN 
+  		INSERT INTO Historie VALUES(:NEW.personal_nr, NULL, :NEW.gehalt, NULL, :NEW.plz, Sysdate);
+   ELSIF UPDATING THEN 
+  		INSERT INTO HISTORIE VALUES(:OLD.personal_nr, :OLD.gehalt, :NEW.gehalt, :OLD.plz, :NEW.plz, SYSDATE);
+ 	ELSIF DELETING THEN 
+ 		INSERT INTO HISTORIE VALUES(:OLD.personal_nr, :OLD.gehalt, NULL, :OLD.plz, NULL, SYSDATE);
+	END IF;
+END;  
